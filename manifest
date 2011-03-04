@@ -1,0 +1,17 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 0.1
+description: My module
+author: Your Name
+license: Specify your license
+copyright: Copyright (c) 2010 by Your Company
+
+
+# these should not be edited
+name: tcp
+moduleid: com.digia.tcp
+guid: d05042c4-82b0-40d8-8805-6239a385b78b
+platform: android
+minsdk: 1.5.1
