@@ -62,6 +62,8 @@ public class ExampleProxy extends KrollProxy
 	    try {
 		this.proxy.read();
 	    } catch (java.io.IOException e) {
+	    	    Log.d(LCAT, "Error in thread run");
+	
 	    }
 	}
     }
@@ -71,10 +73,18 @@ public class ExampleProxy extends KrollProxy
 	String hostName = this.getProperty("hostName").toString();
 	int port = Integer.parseInt(this.getProperty("port").toString());
 	try {
+    	    Log.d(LCAT, "Connecting" + hostName);
+
 	    this.socket.connect(new InetSocketAddress(hostName,port ));
+    	    Log.d(LCAT, "Connected" + hostName);
+
 	    thread = new ReadThread(this);
+    	    Log.d(LCAT, "Starting thread" + hostName);
 	    thread.start();
+    	    Log.d(LCAT, "Thread started" + hostName);
 	} catch(java.io.IOException e) {
+    	    Log.d(LCAT, "Thread/Connect IO Exception "+ hostName);
+
 	}
     }
 
@@ -82,10 +92,12 @@ public class ExampleProxy extends KrollProxy
     @Kroll.method
     public void write(String data) {
 	try {
+    	    Log.d(LCAT, "Writing data: " + data);
 	    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
 	    bufferedWriter.write(data);
 	    bufferedWriter.flush();
 	} catch (java.io.IOException e) {
+    	    Log.d(LCAT, "error writing data: " + data);
 	    
 	}
     }
@@ -96,14 +108,18 @@ public class ExampleProxy extends KrollProxy
 	BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 	StringBuilder sb = new StringBuilder();
 	String str;
-
+	Log.d(LCAT, "Start reading");
 	while ((str = bufferedReader.readLine()) != null)
 	    {
+    	       Log.d(LCAT, "Reading data: " + str);
+
 		KrollDict dict = new KrollDict();
 		dict.put("data",str);
 		this.fireEvent("read",dict);
 	    }
       
+	Log.d(LCAT, "Stop reading");
+
 	// close the reader, and return the results as a String
 	bufferedReader.close();
 	return "";
